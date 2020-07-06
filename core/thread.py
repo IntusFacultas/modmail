@@ -961,8 +961,8 @@ class ThreadManager:
         """
         user_id = -1
 
-        if channel.topic:
-            user_id = match_user_id(channel.topic)
+        # if channel.topic:
+        #     user_id = match_user_id(channel.topic)
 
         if user_id == -1:
             return None
