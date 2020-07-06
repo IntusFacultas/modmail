@@ -317,6 +317,6 @@ def format_channel_name(author, guild, exclude_channel=None):
     #     new_name = f"{name}_{counter}"  # multiple channels with same name
     #     counter += 1
 
-    new_name = secrets.token_hex(24)
+    new_name = secrets.token_hex(12)
 
     return new_name
