@@ -4,6 +4,7 @@ import re
 import string
 import typing
 from difflib import get_close_matches
+import secrets
 from distutils.util import strtobool as _stb  # pylint: disable=import-error
 from itertools import takewhile, zip_longest
 from urllib import parse
@@ -234,7 +235,8 @@ def create_not_found_embed(word, possibilities, name, n=2, cutoff=0.6) -> discor
     )
     val = get_close_matches(word, possibilities, n=n, cutoff=cutoff)
     if val:
-        embed.description += "\nHowever, perhaps you meant...\n" + "\n".join(val)
+        embed.description += "\nHowever, perhaps you meant...\n" + \
+            "\n".join(val)
     return embed
 
 
@@ -304,15 +306,17 @@ def escape_code_block(text):
 
 def format_channel_name(author, guild, exclude_channel=None):
     """Sanitises a username for use with text channel names"""
-    name = author.name.lower()
-    name = new_name = (
-        "".join(l for l in name if l not in string.punctuation and l.isprintable()) or "null"
-    ) + f"-{author.discriminator}"
+    # name = author.name.lower()
+    # name = new_name = (
+    #     "".join(l for l in name if l not in string.punctuation and l.isprintable()) or "null"
+    # ) + f"-{author.discriminator}"
 
-    counter = 1
-    existed = set(c.name for c in guild.text_channels if c != exclude_channel)
-    while new_name in existed:
-        new_name = f"{name}_{counter}"  # multiple channels with same name
-        counter += 1
+    # counter = 1
+    # existed = set(c.name for c in guild.text_channels if c != exclude_channel)
+    # while new_name in existed:
+    #     new_name = f"{name}_{counter}"  # multiple channels with same name
+    #     counter += 1
+
+    new_name = secrets.token_hex(24)
 
     return new_name
