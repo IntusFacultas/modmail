@@ -11,7 +11,7 @@ from discord.ext.commands import MissingRequiredArgument, CommandError
 
 from core.models import getLogger
 from core.time import human_timedelta
-from core.utils import is_image_url, days, match_user_id, truncate, format_channel_name
+from core.utils import is_image_url, days, match_user_id, truncate, format_channel_name, encrypt_decrypt_username
 
 logger = getLogger(__name__)
 
@@ -129,7 +129,7 @@ class Thread:
             log_url = log_count = None
             # ensure core functionality still works
 
-        await channel.edit(topic=f"User ID: {recipient.id}")
+        await channel.edit(topic=f"User ID: {encrypt_decrypt_username(recipient.id)}")
         self.ready = True
 
         if creator:
@@ -919,7 +919,7 @@ class ThreadManager:
                 )
                 if thread is not None:
                     logger.debug("Found thread with tempered ID.")
-                    await channel.edit(topic=f"User ID: {user_id}")
+                    await channel.edit(topic=f"User ID: {encrypt_decrypt_username(user_id)}")
             return thread
 
         if recipient:
@@ -939,7 +939,7 @@ class ThreadManager:
                 thread = None
         else:
             channel = discord.utils.get(
-                self.bot.modmail_guild.text_channels, topic=f"User ID: {recipient_id}"
+                self.bot.modmail_guild.text_channels, topic=f"User ID: {encrypt_decrypt_username(recipient_id)}"
             )
             if channel:
                 thread = Thread(self, recipient or recipient_id, channel)
@@ -957,7 +957,14 @@ class ThreadManager:
         user_id = -1
 
         if channel.topic:
-            user_id = match_user_id(channel.topic)
+            logger.debug(
+                f"Finding Thread from Channel, Encrypted Topic: {channel.topic}")
+            encrypted_channel_id = int(channel.topic[9:])
+            decrypted_channel_id = encrypt_decrypt_username(
+                encrypted_channel_id)
+            decrypted_channel_topic = f"User ID: {decrypted_channel_id}"
+            logger.debug(f"Decrypted Channel Topic: {decrypted_channel_topic}")
+            user_id = match_user_id(decrypted_channel_topic)
 
         if user_id == -1:
             return None

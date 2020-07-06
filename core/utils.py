@@ -1,6 +1,7 @@
 import base64
 import functools
 import re
+import os
 import string
 import typing
 from difflib import get_close_matches
@@ -320,3 +321,8 @@ def format_channel_name(author, guild, exclude_channel=None):
     new_name = secrets.token_hex(12)
 
     return new_name
+
+
+def encrypt_decrypt_username(value):
+    key = int(os.environ["USERNAME_ENCRYPTION_KEY"])
+    return value ^ key
