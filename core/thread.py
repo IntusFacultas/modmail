@@ -943,7 +943,7 @@ class ThreadManager:
             )
             if channel:
                 thread = Thread(self, recipient or recipient_id, channel)
-                self.cache[hash(recipient_id)] = thread  # ASSIGNMENT
+                self.cache[recipient_id] = thread
                 thread.ready = True
         return thread
 
@@ -957,7 +957,7 @@ class ThreadManager:
         user_id = -1
 
         if channel.topic:
-            user_id = (channel.topic)
+            user_id = match_user_id(channel.topic)
 
         if user_id == -1:
             return None
@@ -1000,7 +1000,7 @@ class ThreadManager:
 
         thread = Thread(self, recipient)
 
-        self.cache[hash(recipient.id)] = thread  # ASSIGNMENT
+        self.cache[recipient.id] = thread
 
         # Schedule thread setup for later
         cat = self.bot.main_category
