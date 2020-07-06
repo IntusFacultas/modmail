@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from types import SimpleNamespace
 
 import isodate
-import secrets
+
 import discord
 from discord.ext.commands import MissingRequiredArgument, CommandError
 
@@ -129,7 +129,7 @@ class Thread:
             log_url = log_count = None
             # ensure core functionality still works
 
-        await channel.edit(topic=f"User ID: {secrets.token_hex(5)}")
+        await channel.edit(topic=f"User ID: {hash(recipient.id)}")
         self.ready = True
 
         if creator:
@@ -919,7 +919,7 @@ class ThreadManager:
                 )
                 if thread is not None:
                     logger.debug("Found thread with tempered ID.")
-                    await channel.edit(topic=f"User ID: {user_id}")
+                    await channel.edit(topic=f"User ID: {hash(user_id)}")
             return thread
 
         if recipient:
@@ -939,11 +939,11 @@ class ThreadManager:
                 thread = None
         else:
             channel = discord.utils.get(
-                self.bot.modmail_guild.text_channels, topic=f"User ID: {recipient_id}"
+                self.bot.modmail_guild.text_channels, topic=f"User ID: {hash(recipient_id)}"
             )
             if channel:
                 thread = Thread(self, recipient or recipient_id, channel)
-                self.cache[recipient_id] = thread
+                self.cache[hash(recipient_id)] = thread  # ASSIGNMENT
                 thread.ready = True
         return thread
 
@@ -957,7 +957,7 @@ class ThreadManager:
         user_id = -1
 
         if channel.topic:
-            user_id = match_user_id(channel.topic)
+            user_id = (channel.topic)
 
         if user_id == -1:
             return None
@@ -1000,7 +1000,7 @@ class ThreadManager:
 
         thread = Thread(self, recipient)
 
-        self.cache[recipient.id] = thread
+        self.cache[hash(recipient.id)] = thread  # ASSIGNMENT
 
         # Schedule thread setup for later
         cat = self.bot.main_category

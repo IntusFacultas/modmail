@@ -205,7 +205,7 @@ def cleanup_code(content: str) -> str:
     return content.strip("` \n")
 
 
-TOPIC_REGEX = re.compile(r"\bUser ID:\s*(\d{17,21})\b", flags=re.IGNORECASE)
+TOPIC_REGEX = re.compile(r"\bUser ID:\s*(\d{0,50})\b", flags=re.IGNORECASE)
 
 
 def match_user_id(text: str) -> int:
