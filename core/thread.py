@@ -962,8 +962,8 @@ class ThreadManager:
             try:
                 encrypted_channel_id = int(channel.topic[9:])
             except ValueError:
-                logger.error(
-                    f"Thread: {channel} with topic {channel.topic} is invalid. Closing.")
+                # logger.error(
+                #     f"Thread: {channel} with topic {channel.topic} is invalid. Closing.")
                 for user_id in self.cache:
                     user_channel = self.cache[user_id]
                     if channel == user_channel:
