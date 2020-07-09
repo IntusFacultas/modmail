@@ -959,7 +959,17 @@ class ThreadManager:
         if channel.topic:
             logger.info(
                 f"Finding Thread from Channel, Encrypted Topic: {channel.topic}")
-            encrypted_channel_id = int(channel.topic[9:])
+            try:
+                encrypted_channel_id = int(channel.topic[9:])
+            except ValueError:
+                logger.error(
+                    f"Thread: {channel} with topic {channel.topic} is invalid. Closing.")
+                for user_id in self.cache:
+                    user_channel = self.cache[user_id]
+                    if channel == user_channel:
+                        self.cache.pop(user_id)
+                        break
+                return None
             decrypted_channel_id = encrypt_decrypt_username(
                 encrypted_channel_id)
             decrypted_channel_topic = f"User ID: {decrypted_channel_id}"
