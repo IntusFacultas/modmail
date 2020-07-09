@@ -1034,7 +1034,7 @@ class ThreadManager:
                 self.bot.config.set("fallback_category_id", category.id)
                 await self.bot.config.update()
         logger.info(
-            f"Created thread for user {creator.id}")
+            f"Created thread for user {recipient.id}")
         self.bot.loop.create_task(thread.setup(
             creator=creator, category=category))
         return thread
