@@ -91,7 +91,6 @@ class Thread:
 
         if category is not None:
             overwrites = None
-        logger.info()
         try:
             channel = await self.bot.modmail_guild.create_text_channel(
                 name=format_channel_name(recipient, self.bot.modmail_guild),
