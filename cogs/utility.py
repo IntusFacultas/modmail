@@ -373,7 +373,7 @@ class Utility(commands.Cog):
     async def checkcache(self, ctx):
         """Shows the cache in logs"""
         import json
-        logger.info(json.dumps(self.bot.threads.cache))
+        logger.info(json.dumps(self.bot.threads.convert_to_json()))
 
     @commands.group(invoke_without_command=True)
     @checks.has_permissions(PermissionLevel.OWNER)

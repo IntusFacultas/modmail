@@ -893,6 +893,12 @@ class ThreadManager:
         for channel in self.bot.modmail_guild.text_channels:
             await self.find(channel=channel)
 
+    def convert_to_json(self):
+        str_cache = {}
+        for item in cache:
+            str_cache[item] = f"{cache[item].id} {cache[item].topic}"
+        return str_cache
+
     def __len__(self):
         return len(self.cache)
 
