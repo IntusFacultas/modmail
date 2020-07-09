@@ -372,7 +372,8 @@ class Utility(commands.Cog):
     @utils.trigger_typing
     async def checkcache(self, ctx):
         """Shows the cache in logs"""
-        logger.info(self.bot.threads)
+        import json
+        logger.info(json.dumps(self.bot.threads.cache))
 
     @commands.group(invoke_without_command=True)
     @checks.has_permissions(PermissionLevel.OWNER)
