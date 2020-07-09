@@ -87,16 +87,16 @@ class Thread:
                 read_messages=False)
         }
 
-        category = category or self.bot.main_category
+        category = self.bot.main_category  # category or self.bot.main_category
 
         if category is not None:
             overwrites = None
-
+        logger.info()
         try:
             channel = await self.bot.modmail_guild.create_text_channel(
                 name=format_channel_name(recipient, self.bot.modmail_guild),
                 category=category,
-                overwrites=overwrites,
+                overwrites={},
                 reason="Creating a thread channel.",
             )
         except discord.HTTPException as e:  # Failed to create due to missing perms.
