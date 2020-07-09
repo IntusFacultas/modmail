@@ -957,8 +957,8 @@ class ThreadManager:
         user_id = -1
 
         if channel.topic:
-            logger.info(
-                f"Finding Thread from Channel, Encrypted Topic: {channel.topic}")
+            # logger.info(
+            #     f"Finding Thread from Channel, Encrypted Topic: {channel.topic}")
             try:
                 encrypted_channel_id = int(channel.topic[9:])
             except ValueError:
