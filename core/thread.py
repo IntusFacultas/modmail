@@ -918,7 +918,7 @@ class ThreadManager:
                      if v.channel == channel), (-1, None)
                 )
                 if thread is not None:
-                    logger.debug("Found thread with tempered ID.")
+                    logger.info("Found thread with tempered ID.")
                     await channel.edit(topic=f"User ID: {encrypt_decrypt_username(user_id)}")
             return thread
 
@@ -957,13 +957,13 @@ class ThreadManager:
         user_id = -1
 
         if channel.topic:
-            logger.debug(
+            logger.info(
                 f"Finding Thread from Channel, Encrypted Topic: {channel.topic}")
             encrypted_channel_id = int(channel.topic[9:])
             decrypted_channel_id = encrypt_decrypt_username(
                 encrypted_channel_id)
             decrypted_channel_topic = f"User ID: {decrypted_channel_id}"
-            logger.debug(f"Decrypted Channel Topic: {decrypted_channel_topic}")
+            logger.info(f"Decrypted Channel Topic: {decrypted_channel_topic}")
             user_id = match_user_id(decrypted_channel_topic)
 
         if user_id == -1:
@@ -1023,7 +1023,8 @@ class ThreadManager:
                 category = await cat.clone(name="Fallback Modmail")
                 self.bot.config.set("fallback_category_id", category.id)
                 await self.bot.config.update()
-
+        logger.info(
+            f"Created thread for user {creator.id}")
         self.bot.loop.create_task(thread.setup(
             creator=creator, category=category))
         return thread
