@@ -895,8 +895,8 @@ class ThreadManager:
 
     def convert_to_json(self):
         str_cache = {}
-        for item in cache:
-            str_cache[item] = f"{cache[item].id} {cache[item].topic}"
+        for item in self.cache:
+            str_cache[item] = f"{self.cache[item].id} {self.cache[item].topic}"
         return str_cache
 
     def __len__(self):
